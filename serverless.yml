@@ -1,0 +1,240 @@
+org: sakthivelcloudb
+service: backend
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  stage: ${opt:stage, 'dev'}
+  
+  environment:
+    USER_TABLE: ${self:custom.stageSettings.${self:provider.stage}.userTable}
+    CATEGORY_TABLE: ${self:custom.stageSettings.${self:provider.stage}.categoryTable}
+    PRODUCT_TABLE: ${self:custom.stageSettings.${self:provider.stage}.productTable}
+    COMBO_TABLE: ${self:custom.stageSettings.${self:provider.stage}.comboTable}
+    ERROR_LOG_TABLE: ${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
+    S3_BUCKET_NAME: ${self:custom.stageSettings.${self:provider.stage}.S3_BUCKET_NAME}
+    JWT_SECRET: "apsarasecret122436"
+
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:PutItem
+        - dynamodb:Scan
+        - dynamodb:Query
+        - dynamodb:GetItem
+        - dynamodb:UpdateItem
+      Resource:
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.userTable}
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.categoryTable}
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.productTable}
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.comboTable}
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
+
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+        - s3:GetObject
+        - s3:DeleteObject
+      Resource:
+        - arn:aws:s3:::${self:custom.stageSettings.${self:provider.stage}.S3_BUCKET_NAME}/category/*
+        - arn:aws:s3:::${self:custom.stageSettings.${self:provider.stage}.S3_BUCKET_NAME}/products/*
+
+
+custom:
+  userTable: ${self:custom.stageSettings.${self:provider.stage}.userTable}
+  categoryTable: ${self:custom.stageSettings.${self:provider.stage}.categoryTable}
+  productTable: ${self:custom.stageSettings.${self:provider.stage}.productTable}
+  comboTable: ${self:custom.stageSettings.${self:provider.stage}.comboTable}
+  errorLogTable: ${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
+  stageSettings:
+    dev:
+      userTable: "user-dev"
+      categoryTable: "category-dev"
+      productTable: "product-dev"
+      comboTable: "combo-dev"
+      errorLogTable: "errorlog-dev"
+      S3_BUCKET_NAME: "apsara-asset-dev"
+    prod:
+      userTable: "user"
+      categoryTable: "category"
+      productTable: "product"
+      comboTable: "combo"
+      errorLogTable: "errorlog"
+      S3_BUCKET_NAME: "apsara-asset"
+
+plugins:
+  - serverless-dynamodb-local
+  - serverless-offline
+
+resources:
+  Resources:
+    UsersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.userTable}
+        AttributeDefinitions:
+          - AttributeName: id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: id
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    CategoryTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.categoryTable}
+        AttributeDefinitions:
+          - AttributeName: categoryid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: categoryid
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    
+    ProductTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.productTable}
+        AttributeDefinitions:
+          - AttributeName: productid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: productid
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    ComboTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.comboTable}
+        AttributeDefinitions:
+          - AttributeName: comboid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: comboid
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+    ErrorLogTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.errorLogTable}
+        AttributeDefinitions:
+          - AttributeName: errorlogid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: errorlogid
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+
+
+
+functions:
+  register:
+    handler: login/register.registerHandler
+    events:
+      - http:
+          path: register
+          method: post
+          cors: true
+
+  login:
+    handler: login/login.loginHandler
+    events:
+      - http:
+          path: login
+          method: post
+          cors: true
+
+  addCategory:
+    handler: category/add.addcategory   
+    events:
+      - http:
+          path: category/add             
+          method: post
+          cors: true
+
+  getallcategory:
+    handler: category/get.getallcategory
+    events:
+      - http:
+          path: category/get
+          method: get
+          cors: true
+
+  updatecategory:
+    handler: category/update.updatecategory
+    events:
+      - http:
+          path: category/{categoryid}
+          method: put
+          cors: true
+
+
+  addproduct:
+    handler: product/add.addproduct
+    events:
+      - http:
+          path: product/add             
+          method: post
+          cors: true
+  
+  getallproduct:
+    handler: product/get.getallproduct
+    events:
+      - http:
+          path: product/get
+          method: get
+          cors: true
+  
+  updateproduct:
+    handler: product/update.updateproduct
+    events:
+      - http:
+          path: product/{productid}
+          method: put
+          cors: true
+  
+  updatestockstatus:
+   handler: product/productstatus.updateStockStatus
+   events:
+    - http:
+        path: product/updatestockstatus/{productid}
+        method: put
+        cors: true
+
+  
+  addcombo:
+    handler: combo/add.addcombo
+    events:
+      - http:
+          path: combo/add
+          method: post
+          cors: true
+
+  getallcombo:
+    handler: combo/get.getallcombo
+    events:
+      - http:
+          path: combo/get
+          method: get
+          cors: true
+
+  updatecombo:
+    handler: combo/update.updatecombo
+    events:
+      - http:
+          path: combo/{comboid}
+          method: put
+          cors: true
+  
+  updatecombostockstatus:
+    handler: combo/combostatus.updateComboStockStatus
+    events:
+      - http:
+          path: combo/updatecombostockstatus/{comboid}
+          method: put
+          cors: true
