@@ -33,13 +33,13 @@ module.exports.addproduct = async (event) => {
 
     //  Parse input
     const { categoryid, product, photo, userid,price,foodtype } = JSON.parse(event.body || "{}");
-    console.log("📦 Received Body:", { categoryid, product, userid, price, foodtype });
+    console.log("📦 Received Body:", { categoryid, products, userid, price, foodtype });
     console.log("🖼️ Photo details:", photo ? { name: photo.name, type: photo.type } : "No photo");
     if (!categoryid || !product || !photo || !userid || !foodtype) {
       return {
         statusCode: 400,
         headers: generateHeaders(),
-        body: JSON.stringify({ success: false, message: "categoryid, product, photo, and userid are required", color: "warning", }),
+        body: JSON.stringify({ success: false, message: "categoryid, products, photo, and userid are required", color: "warning", }),
       };
     }
 
@@ -117,6 +117,7 @@ module.exports.addproduct = async (event) => {
       photo: photoUrl,
       foodtype,
       price,
+      type: 'product',
       createdBy: userName,
       createdtime,
        flag: true,

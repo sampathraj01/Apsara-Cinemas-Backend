@@ -12,7 +12,8 @@ provider:
     USER_TABLE: ${self:custom.stageSettings.${self:provider.stage}.userTable}
     CATEGORY_TABLE: ${self:custom.stageSettings.${self:provider.stage}.categoryTable}
     PRODUCT_TABLE: ${self:custom.stageSettings.${self:provider.stage}.productTable}
-    COMBO_TABLE: ${self:custom.stageSettings.${self:provider.stage}.comboTable}
+    ORDER_TABLE: ${self:custom.stageSettings.${self:provider.stage}.orderTable}
+    ORDERLIST_TABLE: ${self:custom.stageSettings.${self:provider.stage}.orderListTable}
     ERROR_LOG_TABLE: ${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
     S3_BUCKET_NAME: ${self:custom.stageSettings.${self:provider.stage}.S3_BUCKET_NAME}
     JWT_SECRET: "apsarasecret122436"
@@ -30,6 +31,8 @@ provider:
         - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.categoryTable}
         - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.productTable}
         - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.comboTable}
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.orderTable}
+        - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.orderListTable}
         - arn:aws:dynamodb:ap-south-1:*:table/${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
 
     - Effect: Allow
@@ -46,14 +49,18 @@ custom:
   userTable: ${self:custom.stageSettings.${self:provider.stage}.userTable}
   categoryTable: ${self:custom.stageSettings.${self:provider.stage}.categoryTable}
   productTable: ${self:custom.stageSettings.${self:provider.stage}.productTable}
-  comboTable: ${self:custom.stageSettings.${self:provider.stage}.comboTable}
   errorLogTable: ${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
+  comboTable: ${self:custom.stageSettings.${self:provider.stage}.comboTable} 
+  orderTable: ${self:custom.stageSettings.${self:provider.stage}.orderTable}
+  orderListTable: ${self:custom.stageSettings.${self:provider.stage}.orderListTable}
   stageSettings:
     dev:
       userTable: "user-dev"
       categoryTable: "category-dev"
       productTable: "product-dev"
-      comboTable: "combo-dev"
+      comboTable: "combo-dev"    
+      orderTable: "order-dev"  
+      orderListTable: "orderlist-dev" 
       errorLogTable: "errorlog-dev"
       S3_BUCKET_NAME: "apsara-asset-dev"
     prod:
@@ -61,6 +68,8 @@ custom:
       categoryTable: "category"
       productTable: "product"
       comboTable: "combo"
+      orderTable: "order"
+      orderListTable: "orderlist"
       errorLogTable: "errorlog"
       S3_BUCKET_NAME: "apsara-asset"
 
@@ -106,6 +115,18 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
+    ErrorLogTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.errorLogTable}
+        AttributeDefinitions:
+          - AttributeName: errorlogid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: errorlogid
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
+    
     ComboTable:
       Type: AWS::DynamoDB::Table
       Properties:
@@ -118,19 +139,29 @@ resources:
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
-    ErrorLogTable:
+    orderTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.errorLogTable}
+        TableName: ${self:custom.orderTable}
         AttributeDefinitions:
-          - AttributeName: errorlogid
+          - AttributeName: orderid
             AttributeType: S
         KeySchema:
-          - AttributeName: errorlogid
+          - AttributeName: orderid
             KeyType: HASH
         BillingMode: PAY_PER_REQUEST
 
-
+    orderListTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: ${self:custom.orderListTable}
+        AttributeDefinitions:
+          - AttributeName: orderlistid
+            AttributeType: S
+        KeySchema:
+          - AttributeName: orderlistid
+            KeyType: HASH
+        BillingMode: PAY_PER_REQUEST
 
 functions:
   register:
@@ -215,26 +246,18 @@ functions:
           method: post
           cors: true
 
-  getallcombo:
-    handler: combo/get.getallcombo
+  addorder:
+    handler : order/add.addorder
     events:
       - http:
-          path: combo/get
-          method: get
-          cors: true
-
-  updatecombo:
-    handler: combo/update.updatecombo
-    events:
-      - http:
-          path: combo/{comboid}
-          method: put
+          path: order/add
+          method: post
           cors: true
   
-  updatecombostockstatus:
-    handler: combo/combostatus.updateComboStockStatus
+  updateorderpaymentstatus:
+    handler: order/updateorderpaymentstatus.updateorderpaymentstatus
     events:
       - http:
-          path: combo/updatecombostockstatus/{comboid}
-          method: put
+          path: order/updateorderpaymentstatus
+          method: post
           cors: true

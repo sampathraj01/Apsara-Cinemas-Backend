@@ -25,9 +25,18 @@ module.exports.updateproduct = async (event) => {
         body: JSON.stringify({ success: false, message: "Unauthorized user. Invalid token.", color: "warning" }),
       };
     }
-
+     console.log("🟢 Incoming Event:", JSON.stringify(event, null, 2));
     const { productid } = event.pathParameters || {};
-    const {  product, categoryid, price, photo, userid,foodtype } = JSON.parse(event.body || "{}");
+    const {  product, categoryid, price, photo, userid,foodtype,productids,description } = JSON.parse(event.body || "{}");
+        console.log("📦 productid:", productid);
+    console.log("📦 product:", product);
+    console.log("📦 categoryid:", categoryid);
+    console.log("📦 price:", price);
+    console.log("📦 photo:", photo);
+    console.log("📦 userid:", userid);
+    console.log("📦 foodtype:", foodtype);
+    console.log("📦 productids:", productids);
+    console.log("📦 description:", description);
 
 
    
@@ -71,12 +80,14 @@ module.exports.updateproduct = async (event) => {
 
     // Update product
     const updatedtime = new Date().toISOString();
-    let updateExpression = "SET productname = :productname, categoryname = :categoryname,foodtype = :foodtype, price = :price, updatedBy = :updatedBy, updatedtime = :updatedtime";
+    let updateExpression = "SET productname = :productname, categoryname = :categoryname,foodtype = :foodtype, price = :price,productids = :productids, description = :description, updatedBy = :updatedBy, updatedtime = :updatedtime";
     const expressionAttributeValues = {
       ":productname": product,
       ":categoryname": categoryname,
       ":foodtype":foodtype,
       ":price": price,
+      ":productids": productids || "",
+      ":description": description || "",
       ":updatedBy": userName,
       ":updatedtime": updatedtime,
     };

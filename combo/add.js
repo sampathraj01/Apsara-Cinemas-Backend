@@ -30,7 +30,7 @@ module.exports.addcombo = async (event) => {
 
     // 🧾 Parse request body
     const {
-      comboname,
+      product,
       categoryid,
       productids,
       description,
@@ -43,7 +43,7 @@ module.exports.addcombo = async (event) => {
     // ✅ Validate required fields
     if (
       !categoryid ||
-      !comboname ||
+      !product ||
       !productids ||
       !Array.isArray(productids) ||
       productids.length === 0 ||
@@ -132,13 +132,14 @@ module.exports.addcombo = async (event) => {
 
     const comboData = {
       productid,
-      productname: comboname ,
+      productname: product ,
       categoryid,
       categoryname,
       productids, // array
       description,
       foodtype,
       price,
+      type: 'combo',
       photo: photoUrl,
       createdBy: userName, 
       createdtime,

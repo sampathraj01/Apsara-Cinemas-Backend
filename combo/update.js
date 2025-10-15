@@ -22,11 +22,7 @@ module.exports.updatecombo = async (event) => {
       return {
         statusCode: 403,
         headers: generateHeaders(),
-        body: JSON.stringify({
-          success: false,
-          message: "Unauthorized user. Invalid token.",
-          color: "warning",
-        }),
+        body: JSON.stringify({ success: false, message: "Unauthorized user. Invalid token.", color: "warning", }),
       };
     }
 
