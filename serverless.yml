@@ -261,3 +261,11 @@ functions:
           path: order/updateorderpaymentstatus
           method: post
           cors: true
+
+  getallorder:
+    handler : order/getallorder.getallorders
+    events:
+      - http:
+          path: order/getallorder
+          method: get
+          cors: true

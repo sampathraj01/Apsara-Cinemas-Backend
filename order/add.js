@@ -2,6 +2,7 @@ const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
 const { DynamoDBDocumentClient, ScanCommand, PutCommand } = require("@aws-sdk/lib-dynamodb");
 const { generateHeaders, logError } = require("../utils/utils");
 const Razorpay = require("razorpay");
+const moment = require("moment-timezone");
 
 const client = new DynamoDBClient({ region: process.env.AWS_REGION });
 const dynamoDb = DynamoDBDocumentClient.from(client);
@@ -11,10 +12,9 @@ const ORDERLIST_TABLE = process.env.ORDERLIST_TABLE;
 
 module.exports.addorder = async (event) => {
   try {
-    // Parse input
     const { amount, phoneNumber, name, seatNo, products } = JSON.parse(event.body || "{}");
-    console.log("📦 Received Body:", { amount, phoneNumber, name, seatNo, products });
 
+    // Step 1 -> Required Fields Check 
     if (!amount || !phoneNumber || !name || !seatNo || !Array.isArray(products) || products.length === 0) {
       return {
         statusCode: 400,
@@ -27,15 +27,14 @@ module.exports.addorder = async (event) => {
       };
     }
 
-    // NOTE: Scanning entire orders table for orderNo is ok for small tables.
-    // For production / large tables use a counter item (recommended).
+    // Step 2 -> Get Maximam OrderNo
     const scanParams = {
       TableName: ORDER_TABLE,
       ProjectionExpression: "orderNo",
     };
 
     const scanResult = await dynamoDb.send(new ScanCommand(scanParams));
-    let orderNo = 1; // default
+    let orderNo = 1; 
 
     if (Array.isArray(scanResult.Items) && scanResult.Items.length > 0) {
       const orderNos = scanResult.Items
@@ -46,10 +45,10 @@ module.exports.addorder = async (event) => {
       }
     }
 
+    // Step 3 -> Formatted OrderNo
     const formattedOrderNo = orderNo.toString().padStart(3, "0");
-    console.log("Next orderNo:", formattedOrderNo);
 
-    // Create Razorpay order
+    // Step 4 -> Create Razorpay order
     const razorpay = new Razorpay({
       key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_RTETuyApMx9Y6C",
       key_secret: process.env.RAZORPAY_KEY_SECRET || "Y1Db9TB5uTnxUGeA5QlBYoBK",
@@ -63,12 +62,17 @@ module.exports.addorder = async (event) => {
     });
     const razorpay_order_id = razorpayOrder.id;
 
-    // Prepare order record
+    // Step 5 -> Insert Data in Order table
     const orderid = Date.now().toString();
     const createdtime = new Date().toISOString();
 
+    const orderdate = moment().tz("Asia/Kolkata").format("YYYY-MM-DD"); 
+    const ordertime = moment().tz("Asia/Kolkata").format("hh:mm A");
+
     const orderData = {
       orderid,
+      orderdate,
+      ordertime,
       orderNo: formattedOrderNo,
       phoneNumber,
       name,
@@ -76,9 +80,10 @@ module.exports.addorder = async (event) => {
       createdtime,
       Razorpayorderid: razorpay_order_id,
       paymentstatus: "pending",
+      orderstatus : "notdelivered",
+      printflag: false
     };
 
-    // Save order
     await dynamoDb.send(
       new PutCommand({
         TableName: ORDER_TABLE,
@@ -86,8 +91,9 @@ module.exports.addorder = async (event) => {
       })
     );
 
-    // Save products (order list) in parallel
+    // Step 6 -> Insert Product list in Orderlist table
     const orderlistPromises = products.map((product) => {
+      const total = (product.qty * product.price)
       const orderlistData = {
         orderlistid: `${orderid}-${product.productid}-${Date.now().toString()}`,
         orderrefid: orderid,
@@ -96,7 +102,7 @@ module.exports.addorder = async (event) => {
         photo: product.photo,
         qty: (Number(product.qty)),
         price: parseFloat(Number(product.price)),
-        total: parseFloat(Number(product.total).toFixed(2)),
+        total: parseFloat(Number(total).toFixed(2)),
         createdtime,
       };
 
@@ -110,9 +116,12 @@ module.exports.addorder = async (event) => {
 
     await Promise.all(orderlistPromises);
 
+    // Step 7 -> Send Response Frontend
     const data = {
       razorpay_order_id,
       orderId: orderid,
+      orderdate,
+      ordertime,
       orderNo: formattedOrderNo,
       createdtime,
     };
@@ -122,14 +131,13 @@ module.exports.addorder = async (event) => {
       headers: generateHeaders(),
       body: JSON.stringify({ success: true, message: "order added successfully", color: "success", data }),
     };
-  } catch (error) {
-    console.error("Error in addorder:", error);
-    await logError(ORDER_TABLE, "addorder", error.message, null);
-
-    return {
-      statusCode: 500,
-      headers: generateHeaders(),
-      body: JSON.stringify({ success: false, message: "Error adding order", color: "warning", data: error.message }),
-    };
+    } 
+    catch (error) {
+      await logError(ORDER_TABLE, "addorder", error.message, null);
+      return {
+        statusCode: 500,
+        headers: generateHeaders(),
+        body: JSON.stringify({ success: false, message: error.message , color: "error",  }),
+      };
   }
 };
