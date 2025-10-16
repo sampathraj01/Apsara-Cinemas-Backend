@@ -76,6 +76,7 @@ module.exports.addorder = async (event) => {
       orderNo: formattedOrderNo,
       phoneNumber,
       name,
+      amount,
       seatNo,
       createdtime,
       Razorpayorderid: razorpay_order_id,
