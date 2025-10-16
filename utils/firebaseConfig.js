@@ -1,15 +1,15 @@
 module.exports = {
   firebaseConfig1: {
-    "type": "service_account",
-    "project_id": "magoprinpro-abe2d",
-    "private_key_id": "eaaf8409ffe98549000b32dced7892657ea430f6",
-    "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCxmqQ5a/0qye2l\nmaMVV9o50+UFZn0vaGRjrWb/dBf6gV+U9xdPlgsumVSd0KPA2eJJ9lE9jLTdHOnO\nZP4DOrA7Ks8SkaAsP9r5IhJcZ78/8/zdM0HYKsPYFqisCZByqOq9Hxm8b80odzMj\nA+oBXazZIchYL2jQ5VcqXHcYpUQO4l6hhuEONmXM1GH92VGyKYCFx57Kh4dRlmD3\nP8a9q1/zlxHUqoz6M+v3nTtAP2IVh2uu7yIjOrpakjfj6CUPPwBqMbg40jyDJEBT\nHvYCbIGzj5koNqJky3Aq0YSGI36EKMiipDegV2yDUru26jSm0QhIl67s2qVQM6xB\nqfh/tst5AgMBAAECggEAEJGBGtxAphe9ZEf/Z0kmp2NlnPSGiYApxq9mtD5pKD+e\nd5VPfDyz9q5rhDzHsgDW3piB1AXxhM54NKlw6u3e1+jdSs8BYW9kPFPvNjtKzlVd\ndGieOWN6mV46cQYuuWDvDnfoHOSp1R8S9a7H9fBTuikvzqOURHyd/j/Zr8JnJXjV\nNLLqoxwVaTc6Zqm/6pAYsqpCo4IkI0N7j+lq2X/o7dxXzUhyYxIz/xP6PaypbRE7\npA5jq3PKBfE8df0GUdikDcJaDq3VlIUL5K0S9JL78xZbpXGRFwOr+VTcXjnv03KF\nIXXGQLiuTODLzc7PP2JPG+0u+lqsdI6Sz0cgUsOpawKBgQDiDomOoTDeTMWRZOqg\nuZz+bVkNYCvKp/DPWVhlQSI+18Bhs7CwoqcTJfjKUimnsoqYypRC+fx4Es6V5Ylv\nyPMnnXqwiJycFxU07LSXKDx38Oi/2nbl9aXccUrPJdoiE7dxcKjLtagbr0KC6nAg\nJdYkzUPdtmJPZ/nlMIKzWKJDXwKBgQDJIRlOdfrhAOu/uG9Y8wVsocZQBUt/lP+q\nDb7YMNkA7rsWXl1CIfiKIRFxM+r8erq/ZTVmim4wkM50LtZzKeiV/VxLJnRMbrZc\n3DXkYHCKlZdfzkKM8pgB54lqNG0zmQJq8FgnF8bsfjUOCvWg++9/6Blqmm0/VdbN\n3Q9dItZ4JwKBgDSfXbYuH8of5P3rmBLCIqG3ortSX99VKOGb0s//UZF/d/FGeyMj\nOfFjLX8rkTbQgSMARXMx7mulNSH/xPaYuMHIDv95TbuoQ++GCqQFYc4p7oR6vqLZ\nhDrExL1j+ltka5ekuiZxqyiGq9z95gwVwrvebKX4BvqlIa8Qk9xcDanRAoGALXHl\nHe1aemyS2Ab8YcTHfPwwqvQHUxR/kBT7Ai5HWgaXDz7TI5Y5ajx+jG2GsvWoLIbZ\nwgmVTDPr8iSDIBJgE0PkDrbpoDuDyQeYxblktGuIgIVCVEacQhHm4rBl3Dq+aRtV\nT7/3mogJxNqFFZLXUrdGxueNt7nVhz5jsk+k1hECgYBzzlKR/UvNsUVi3Bh14MBz\nEzvaghqiisjEXQVovoeh8k/lU0MoC65xMr/v095a8LipTMCoAf7RkWMWrhQkR8C/\nV3dlxQNBovCHWS3sk+kmVx0rcdS7v/Y5YOy5p9FI18zVwdPCoSLA8LDwGPO6T5LE\nfceHydwnmU49j6i8hW4qTw==\n-----END PRIVATE KEY-----\n",
-    "client_email": "firebase-adminsdk-bu7wh@magoprinpro-abe2d.iam.gserviceaccount.com",
-    "client_id": "115721607947859265121",
-    "auth_uri": "https://accounts.google.com/o/oauth2/auth",
-    "token_uri": "https://oauth2.googleapis.com/token",
-    "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-    "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-bu7wh%40magoprinpro-abe2d.iam.gserviceaccount.com",
-    "universe_domain": "googleapis.com"
-  }
+  "type": "service_account",
+  "project_id": "apasar-theatre",
+  "private_key_id": "0bd2553def9cdc13a5c3d21304fcd1bb09743802",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDLPFX865CWQSZN\nfTyH67MK5yCiFZZK3nIU5MEqxj9A2X3r+29+rkrCm3QUmYTfUZNRDSDtEHz9bWJY\n414fJBorIZmNmHSd6RqUMiBOmKMYLhRQwr+VsS0VlzeuEggpVGrtnYklteBg/uPj\nzR5/bP+fOvlWd4DP2LG48OL62hWf5w8k9CGflRVIUv7UH+VRG5Jfvp4dPWQ2XeAs\nLZk5iq8R3kCO5cc2mVN9mUMeQApfsHHmMXyIFTtkWoH+I5XZeuOj3mMWYgQVHIpF\nVTc8GJ+YhkJTFhGYU9nRvhfNthfwR3NenENI8XUDLSH33K1hqaoulqaSoalC6Hmf\ngPvmta1BAgMBAAECggEAJf/Gfg8XThipTjS7xBgcNk4nqlaJ7r6vqttoiJRfkEL6\nCczNuGxjGwbQyec4Uj7g4fcn8Fs0W3f/uunsF7t6zxStrq1SJJJIf2vt4XQljmhT\nMRRwmM7zRIWtCfViJEQd6Aab9XqPlOMjfdzEtoONOdrfcrzOT05PUGptrgRnpalK\n/I+9G53lS6PSzwmj+0fuDE22oQY8hFwCbqnD7rQT8u9PfeKCyXaUAqyMbrc+AVAU\nTFgiYpQXSTEhZtq8mEr6Aj1Y85f0RPpVD+mOHWzPO7nPNNQODwJG85TzZzHnbFpZ\nQTVQYoSuJ3LKtXR5n234VX3o1xeIr02KQGMlrdo2lwKBgQD2fQGWmTz+cVgrpc/3\nY/tjBQyzmDoCTmVCmwiW0bKCPfKqlc1ahbh1DnqmoHUmiGDe6nT1ukb2KaTaojhL\nrm2dqlhLteEfHaJ2RYiACur2BFf2Ohxhnxpi9C0g3Xl4n2umQ/dbiWUEUrdO/hCR\n0OAb/zCcWv+kWJjc+8FGA0YUdwKBgQDTFAxfWmR64VxRhzLA2ntBuVHd1/e5TkdX\nQwZ5SB6mq20YyL2n3jeCLiJBNXCfHZ7+I9Ret9v1H5/3RW+5oFaGWU5eTncZUs3X\n/ggnGbfevN36uxd7Uwrlmz8m4etcR04muBWy/TBlnSWQc1UlpeA3vCHkzLswMkol\nwVrdDOtSBwKBgQCVGIRPbh3A4xqsPD4RrL6w5KsML3ZXUshZg6GsaOeLdKFGohp3\nOQ+cbset5r02M6Q08qkQwj6ORB5dyWY4EShpCFMkaL3lrm1JEUJCAViiu3nhjMEC\nI9U4Ke7qRE1nszbQeag0DGW4Obh75Z5sNWZ6SOBEk56y8Ix2jyoXiX9ofQKBgFf9\nq4q0a96tw4ZZDddHPMqRLoeEWEhvUV4XGsPERMLGA5ypUiaAhDNIeA8m7+PkvTrE\nROuXSaJNpKm30HNZW7h10i2OGCf+VMENrOhf2D6KDR9QjuFiJNDCfvj+hNbbAsEx\nTBppYZt6fwZQjdY759RUIOz4S7AzxqUmjXJIyHBRAoGAMOMAwUyMLLGStg6896Wm\nV5ys01Qb1AL0qIMjB5jruW9izgneY4bIBOoFFiggI6P/uxQXXFIoVdzEQ+tU96fA\nMwsQUT+5QgFE1zep0TskJwTagjvX+mc0Q4EJ/UxjQeZNZ03iqvr+9SiZJO95OV/u\nHvSgYO3dnpwcYH24ypn7iPQ=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@apasar-theatre.iam.gserviceaccount.com",
+  "client_id": "105128119440319214084",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40apasar-theatre.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
 };
