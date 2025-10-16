@@ -267,5 +267,5 @@ functions:
     events:
       - http:
           path: order/getallorder
-          method: get
+          method: post
           cors: true
