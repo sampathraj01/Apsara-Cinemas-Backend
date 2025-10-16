@@ -21,6 +21,7 @@
     "@aws-sdk/util-dynamodb": "^3.902.0",
     "aws-sdk": "^2.1692.0",
     "bcryptjs": "^3.0.2",
+    "firebase-admin": "^13.5.0",
     "jsonwebtoken": "^9.0.2",
     "moment-timezone": "^0.6.0",
     "pdfmake": "^0.2.20",

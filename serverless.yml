@@ -269,3 +269,19 @@ functions:
           path: order/getallorder
           method: post
           cors: true
+
+  getorderstatus:
+    handler: orderstatus/getorderstatus.getorderstatusbyid
+    events:
+      - http:
+          path: order/getorderstatus/{orderid}
+          method: get
+          cors: true
+
+  updateorderstatus:
+    handler: orderstatus/updateorderstatus.updateorderstatus
+    events:
+      - http:
+          path: order/updateorderstatus
+          method: post
+          cors: true

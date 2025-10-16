@@ -1,5 +1,5 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, ScanCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, ScanCommand ,UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { generateHeaders } = require("../utils/utils");
@@ -12,7 +12,7 @@ const USERS_TABLE = process.env.USER_TABLE;
 // LOGIN API
 module.exports.loginHandler = async (event) => {
   try {
-    const { email, password } = JSON.parse(event.body || "{}");
+    const { email, password , fcmtoken } = JSON.parse(event.body || "{}");
 
     if (!email || !password) {
       return {
@@ -57,6 +57,16 @@ module.exports.loginHandler = async (event) => {
       process.env.JWT_SECRET,
       { expiresIn: "24h" }
     );
+
+    if (fcmtoken) {
+      await dynamoDb.send(new UpdateCommand({
+        TableName: USERS_TABLE,
+        Key: { id: user.id },
+        UpdateExpression: "SET #fcm = :fcmtoken",
+        ExpressionAttributeNames: { "#fcm": "fcmToken" }, 
+        ExpressionAttributeValues: { ":fcmtoken": fcmtoken },
+      }));
+    }
 
     return {
       statusCode: 200,

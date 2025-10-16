@@ -1,9 +1,10 @@
 const { DynamoDBClient } = require("@aws-sdk/client-dynamodb");
-const { DynamoDBDocumentClient, GetCommand, UpdateCommand } = require("@aws-sdk/lib-dynamodb");
+const { DynamoDBDocumentClient, GetCommand, ScanCommand , UpdateCommand } = require("@aws-sdk/lib-dynamodb");
 const { S3Client, PutObjectCommand } = require("@aws-sdk/client-s3");
 const path = require("path");
 const { generateHeaders, logError } = require("../utils/utils");
 const { generateInvoiceDocument } = require("../utils/pdfGenerator"); 
+const { sendPaymentSuccessNotification } = require("../utils/sendNotification")
 const s3 = new S3Client({ region: process.env.AWS_REGION });
 const client = new DynamoDBClient({ region: process.env.AWS_REGION });
 const dynamoDb = DynamoDBDocumentClient.from(client);
@@ -22,7 +23,6 @@ module.exports.updateorderpaymentstatus = async (event) => {
   try {
     const body = JSON.parse(event.body || "{}");
     const { orderid, razorpay_payment_id, razorpay_signature, paymentstatus, paymentfailedreason , products} = body;
-
 
     // Step 1 -> Required Field is missing send reposnse
     if (!orderid || !paymentstatus || !products ) {
@@ -57,7 +57,7 @@ module.exports.updateorderpaymentstatus = async (event) => {
       orderid : orderResult.Item.orderid,
       orderno : orderResult.Item.orderNo,
       amount : orderResult.Item.amount,
-      time : orderResult.Item.ordertime,
+      time : orderResult.Item.time,
     }
 
 
@@ -81,6 +81,7 @@ module.exports.updateorderpaymentstatus = async (event) => {
         pdfDoc.getBuffer(resolve);
       });
 
+    
        // Upload to S3
       const fileKey = `invoices/${orderid}-${order.orderno}.pdf`;
       await s3.send(
@@ -92,9 +93,29 @@ module.exports.updateorderpaymentstatus = async (event) => {
         })
       );
 
+
       const pdfUrl = `https://${BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileKey}`;
       updateExpression += ", invoiceurl = :invoiceurl";
       expressionValues[":invoiceurl"] = pdfUrl;
+
+      const userScan = await dynamoDb.send(new ScanCommand({
+        TableName: process.env.USER_TABLE, 
+        ProjectionExpression: "fcmToken" 
+      }));
+
+      const allFcmTokens = userScan.Items
+        ?.map(item => item.fcmToken)
+        ?.filter(token => token) || []; 
+
+      for (const fcmToken of allFcmTokens) {
+        try {
+          await sendPaymentSuccessNotification(order, pdfUrl, fcmToken); 
+        } catch (error) {
+        }
+      }
+      // const userFcmToken  = "esfy-JfRE2jtrbcPfsSFkx:APA91bFmxbKpFRBXbsefV1-0HlKO2DcZOEBIT4yGIL8yKdfcJFWZX8D7Zv0_MWcMQL9V18x_w9zaGJ4RQxJYebhkdR_PZ9nptb3wh53jOipgkDDiGvzVPls";
+    
+
 
       // Update DynamoDB
       await dynamoDb.send(
