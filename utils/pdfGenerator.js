@@ -66,7 +66,7 @@ const generateQRCode = async (text) => {
     const paidIcon = getpaidIcon();
 
     const docDefinition = {
-      pageSize: { width: 393, height:'auto'},
+      pageSize: { width: 393, height: 1700 },
       pageMargins: [8, 8, 8, 8], // Match p-3 (~12px), optimized for mobile
       content: [
         {

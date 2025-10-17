@@ -57,7 +57,7 @@ module.exports.updateorderpaymentstatus = async (event) => {
       orderid : orderResult.Item.orderid,
       orderno : orderResult.Item.orderNo,
       amount : orderResult.Item.amount,
-      time : orderResult.Item.time,
+      time : orderResult.Item.ordertime,
     }
 
 
