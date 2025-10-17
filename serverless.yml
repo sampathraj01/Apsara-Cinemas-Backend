@@ -6,7 +6,7 @@ provider:
   name: aws
   runtime: nodejs20.x
   region: ap-south-1
-  stage: ${opt:stage, 'prod'}
+  stage: ${opt:stage, 'dev'}
   
   environment:
     USER_TABLE: ${self:custom.stageSettings.${self:provider.stage}.userTable}
@@ -17,6 +17,8 @@ provider:
     ERROR_LOG_TABLE: ${self:custom.stageSettings.${self:provider.stage}.errorLogTable}
     S3_BUCKET_NAME: ${self:custom.stageSettings.${self:provider.stage}.S3_BUCKET_NAME}
     JWT_SECRET: "apsarasecret122436"
+    RAZORPAY_KEY_ID: "rzp_live_RUUulcgGzP6EKt"
+    RAZORPAY_KEY_SECRET: "DreJjErMcTLiQ9Lx50lVoSbo"
 
   iamRoleStatements:
     - Effect: Allow

@@ -59,241 +59,241 @@ const generateQRCode = async (text) => {
 };
 
 // Function to generate PDF document definition
-const generateInvoiceDocument = async (order = {}, products = []) => {
-  const totalAmount = order.amount || 0;
-  const qrCodeDataUrl = order.orderid ? await generateQRCode(order.orderid) : null;
-  const hamburgerSodaIcon = getHamburgerSodaIcon();
-  const paidIcon = getpaidIcon();
+  const generateInvoiceDocument = async (order = {}, products = []) => {
+    const totalAmount = order.amount || 0;
+    const qrCodeDataUrl = order.orderid ? await generateQRCode(order.orderid) : null;
+    const hamburgerSodaIcon = getHamburgerSodaIcon();
+    const paidIcon = getpaidIcon();
 
-  const docDefinition = {
-    pageSize: { width: 393, height:'auto'},
-    pageMargins: [8, 8, 8, 8], // Match p-3 (~12px), optimized for mobile
-    content: [
-      {
-        stack: [
-          // Header: Apsara Cinemas
-          {
-            text: 'Apsara Cinemas',
-            style: 'header',
-            alignment: 'center',
-            margin: [0, 12, 0, 4], // mt-3, mt-1
-          },
-          {
-            columns: [
-              {
-                image: hamburgerSodaIcon,
-                alignment:'right',
-                margin: [0, 0, 4, 0]
-              },
-              { text: 'Order Summary',
-                style: 'subheader',
-                alignment: 'left',
-              },
-            ],
-            margin: [0, 0, 50, 20], // mt-5
-            width: '100%',
-          },
-          {
-            columns: [
-              {
-                text: `Date: ${order.date ? new Date(order.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-') : ''}`,
-                style: 'normal',
-                alignment: 'left',
-              },
-              {
-                text: `Ph: ${order.phoneNumber ? formatPhoneNumber(order.phoneNumber) : ''}`,
-                style: 'normal',
-                bold: true,
-                alignment: 'right',
-              },
-            ],
-            margin: [0, 0, 0, 20], // mt-5
-            width: '100%',
-          },
-          // Time
-          {
-            text: `Time: ${order.time || ''}`,
-            style: 'normal',
-            alignment: 'left',
-            margin: [0, 0, 0, 16], // mt-5, mt-4
-          },
-          // Table Header
-          {
-            table: {
-              widths: ['50%', '12%', '15%', '23%'], // Sum to 400px
-              body: [
-                [
-                  { text: 'Items', style: 'tableHeader', alignment:'left' },
-                  { text: 'Qty', style: 'tableHeader', alignment: 'center' },
-                  { text: 'Rate', style: 'tableHeader', alignment: 'center' },
-                  { text: 'Amount', style: 'tableHeader', alignment: 'center' },
-                ],
+    const docDefinition = {
+      pageSize: { width: 393, height:'auto'},
+      pageMargins: [8, 8, 8, 8], // Match p-3 (~12px), optimized for mobile
+      content: [
+        {
+          stack: [
+            // Header: Apsara Cinemas
+            {
+              text: 'Apsara Theatre',
+              style: 'header',
+              alignment: 'center',
+              margin: [0, 12, 0, 4], // mt-3, mt-1
+            },
+            {
+              columns: [
+                {
+                  image: hamburgerSodaIcon,
+                  alignment:'right',
+                  margin: [0, 0, 4, 0]
+                },
+                { text: 'Order Summary',
+                  style: 'subheader',
+                  alignment: 'left',
+                },
               ],
+              margin: [0, 0, 50, 20], // mt-5
+              width: '100%',
             },
-            layout: {
-              hLineWidth: () => 2,
-              vLineWidth: () => 0,
-              hLineColor: () => '#000000',
-              paddingTop: () => 12,
-              paddingBottom: () => 12,
-              hLineStyle: () => ({ dash: { length: 4, space: 2 } }), // Match border-dashed
+            {
+              columns: [
+                {
+                  text: `Date: ${order.date ? new Date(order.date).toLocaleDateString('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).replace(/\//g, '-') : ''}`,
+                  style: 'normal',
+                  alignment: 'left',
+                },
+                {
+                  text: `Ph: ${order.phoneNumber ? formatPhoneNumber(order.phoneNumber) : ''}`,
+                  style: 'normal',
+                  bold: true,
+                  alignment: 'right',
+                },
+              ],
+              margin: [0, 0, 0, 20], // mt-5
+              width: '100%',
             },
-            margin: [0, 16, 0, 0], // mt-4
-          },
-          // Table Body
-          {
-            table: {
-              widths: ['50%', '12%', '15%', '23%'],
-              body: products.length
-                ? products.map(item => [
+            // Time
+            {
+              text: `Time: ${order.time || ''}`,
+              style: 'normal',
+              alignment: 'left',
+              margin: [0, 0, 0, 16], // mt-5, mt-4
+            },
+            // Table Header
+            {
+              table: {
+                widths: ['50%', '12%', '15%', '23%'], // Sum to 400px
+                body: [
+                  [
+                    { text: 'Items', style: 'tableHeader', alignment:'left' },
+                    { text: 'Qty', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Rate', style: 'tableHeader', alignment: 'center' },
+                    { text: 'Amount', style: 'tableHeader', alignment: 'center' },
+                  ],
+                ],
+              },
+              layout: {
+                hLineWidth: () => 2,
+                vLineWidth: () => 0,
+                hLineColor: () => '#000000',
+                paddingTop: () => 12,
+                paddingBottom: () => 12,
+                hLineStyle: () => ({ dash: { length: 4, space: 2 } }), // Match border-dashed
+              },
+              margin: [0, 16, 0, 0], // mt-4
+            },
+            // Table Body
+            {
+              table: {
+                widths: ['50%', '12%', '15%', '23%'],
+                body: products.length
+                  ? products.map(item => [
+                      {
+                        stack: [
+                          { text: item.productname || 'Item', style: 'tableBody',alignment: 'left' },
+                          item.description && item.description !== ''
+                            ? { text: `(${item.description})`, style: 'tableDescription', alignment: 'left' }
+                            : {},
+                        ],
+                      },
+                      { text: item.qty || 1, style: 'tableBody', alignment: 'center' },
+                      { text: `₹ ${item.price || '0.00'}`, style: 'tableBody', alignment: 'center' },
+                      { text: `₹ ${formatCurrency((item.price || 0) * (item.qty || 1))}`, style: 'tableBody', alignment: 'center' },
+                    ])
+                  : [[{ text: 'No items', style: 'tableBody', colSpan: 4, alignment: 'center' }, {}, {}, {}]],
+              },
+              layout: {
+                hLineWidth: () => 0,
+                vLineWidth: () => 0,
+                hLineColor: () => '#000000',
+                paddingTop: () => 8,
+                paddingBottom: () => 8,
+              },
+            },
+            // Total
+            {
+              table: {
+                widths: ['*'],
+                body: [
+                  [
                     {
-                      stack: [
-                        { text: item.productname || 'Item', style: 'tableBody',alignment: 'left' },
-                        item.description && item.description !== ''
-                          ? { text: `(${item.description})`, style: 'tableDescription', alignment: 'left' }
-                          : {},
+                      text: [
+                        { text: 'Total', style: 'tableHeader', bold: true },
+                        { text: ' ₹ ', style: 'tableHeader', bold: true, margin: [24, 0, 0, 0] },
+                        { text: formatCurrency(totalAmount), style: 'totalAmount', bold: true },
                       ],
+                      alignment: 'right',
                     },
-                    { text: item.qty || 1, style: 'tableBody', alignment: 'center' },
-                    { text: `₹ ${item.price || '0.00'}`, style: 'tableBody', alignment: 'center' },
-                    { text: `₹ ${formatCurrency((item.price || 0) * (item.qty || 1))}`, style: 'tableBody', alignment: 'center' },
-                  ])
-                : [[{ text: 'No items', style: 'tableBody', colSpan: 4, alignment: 'center' }, {}, {}, {}]],
-            },
-            layout: {
-              hLineWidth: () => 0,
-              vLineWidth: () => 0,
-              hLineColor: () => '#000000',
-              paddingTop: () => 8,
-              paddingBottom: () => 8,
-            },
-          },
-          // Total
-          {
-            table: {
-              widths: ['*'],
-              body: [
-                [
-                  {
-                    text: [
-                      { text: 'Total', style: 'tableHeader', bold: true },
-                      { text: ' ₹ ', style: 'tableHeader', bold: true, margin: [24, 0, 0, 0] },
-                      { text: formatCurrency(totalAmount), style: 'totalAmount', bold: true },
-                    ],
-                    alignment: 'right',
-                  },
+                  ],
                 ],
+              },
+              margin: [0, 8, 0, 0], // mt-2
+              layout: {
+                hLineWidth: () => 2,
+                vLineWidth: () => 0,
+                hLineColor: () => '#000000',
+                paddingTop: () => 12,
+                paddingBottom: () => 12,
+                hLineStyle: () => ({ dash: { length: 4, space: 2 } }), // Match border-dashed
+              },
+            },
+            // Order Number
+            {
+              text: [
+                { text: 'Order No: ', style: 'normal', bold: true },
+                { text: `# ${order.orderno || ''}`, style: 'orderNo' },
               ],
+              alignment: 'center',
+              margin: [0, 12, 0, 8], // mt-3
             },
-            margin: [0, 8, 0, 0], // mt-2
-            layout: {
-              hLineWidth: () => 2,
-              vLineWidth: () => 0,
-              hLineColor: () => '#000000',
-              paddingTop: () => 12,
-              paddingBottom: () => 12,
-              hLineStyle: () => ({ dash: { length: 4, space: 2 } }), // Match border-dashed
-            },
-          },
-          // Order Number
-          {
-            text: [
-              { text: 'Order No: ', style: 'normal', bold: true },
-              { text: `# ${order.orderno || ''}`, style: 'orderNo' },
-            ],
-            alignment: 'center',
-            margin: [0, 12, 0, 8], // mt-3
-          },
-          {
-            table: {
-              widths: ['8%' , '22%', '71%',], 
-              body: [
-                [
-                  { text: '' },
-                  { image: paidIcon , style: 'tableHeader', alignment:'left',margin: [0, 0, 0, 40]  },
-                  { image: qrCodeDataUrl , style: 'tableHeader', alignment:'left' },
+            {
+              table: {
+                widths: ['8%' , '22%', '71%',], 
+                body: [
+                  [
+                    { text: '' },
+                    { image: paidIcon , style: 'tableHeader', alignment:'left',margin: [0, 0, 0, 40]  },
+                    { image: qrCodeDataUrl , style: 'tableHeader', alignment:'left' },
+                  ],
                 ],
-              ],
+              },
+              margin: [0, 4, 0, 0], 
+              layout: {
+                hLineWidth: () => 0,
+                vLineWidth: () => 0,
+                hLineColor: () => '#000000',
+                paddingTop: () => 8,
+                paddingBottom: () => 8,
+              },
             },
-            margin: [0, 4, 0, 0], 
-            layout: {
-              hLineWidth: () => 0,
-              vLineWidth: () => 0,
-              hLineColor: () => '#000000',
-              paddingTop: () => 8,
-              paddingBottom: () => 8,
+            {
+              text: 'Your order is being prepared in 15-20 mins.',
+              style: 'normal',
+              alignment: 'center',
+              margin: [0, 40, 0, 0], // mt-10
             },
-          },
-          {
-            text: 'Your order is being prepared in 15-20 mins.',
-            style: 'normal',
-            alignment: 'center',
-            margin: [0, 40, 0, 0], // mt-10
-          },
-          {
-            text: 'We will contact you when the food is ready.',
-            style: 'normal',
-            alignment: 'center',
-            margin: [0, 10, 0, 0], // mt-10
-          },
-        ],
-        width: 200, // Max width 400px
-        alignment: 'center',
-        border: [1, 1, 1, 1],
-        borderColor: '#E8DFE0',
+            {
+              text: 'We will contact you when the food is ready.',
+              style: 'normal',
+              alignment: 'center',
+              margin: [0, 10, 0, 0], // mt-10
+            },
+          ],
+          width: 200, // Max width 400px
+          alignment: 'center',
+          border: [1, 1, 1, 1],
+          borderColor: '#E8DFE0',
+        },
+      ],
+      styles: {
+        header: {
+          fontSize: 24, // Match text-[24px]
+          color: '#CB202D',
+          bold: true,
+        },
+        subheader: {
+          fontSize: 12, // Match text-[12px]
+          color: '#CB202D',
+        },
+        normal: {
+          fontSize: 14, // Match text-[14px]
+          color: '#000000',
+        },
+        tableHeader: {
+          fontSize: 14, // Match text-[14px]
+          color: '#000000',
+          bold: true,
+        },
+        tableBody: {
+          fontSize: 16, // Match text-[16px]
+          color: '#000000',
+          bold: true,
+        },
+        tableDescription: {
+          fontSize: 12, // Match text-[12px]
+          color: '#000000',
+          bold: true,
+        },
+        totalAmount: {
+          fontSize: 26, // Match text-[26px]
+          color: '#000000',
+          bold: true,
+        },
+        orderNo: {
+          fontSize: 18, // Match text-[18px]
+          color: '#CB202D',
+          bold: true,
+        },
+        button: {
+          fontSize: 16, // Match text-[16px]
+          color: '#FFFFFF',
+          bold: true,
+        },
       },
-    ],
-    styles: {
-      header: {
-        fontSize: 24, // Match text-[24px]
-        color: '#CB202D',
-        bold: true,
+      defaultStyle: {
+        font: 'Roboto',
       },
-      subheader: {
-        fontSize: 12, // Match text-[12px]
-        color: '#CB202D',
-      },
-      normal: {
-        fontSize: 14, // Match text-[14px]
-        color: '#000000',
-      },
-      tableHeader: {
-        fontSize: 14, // Match text-[14px]
-        color: '#000000',
-        bold: true,
-      },
-      tableBody: {
-        fontSize: 16, // Match text-[16px]
-        color: '#000000',
-        bold: true,
-      },
-      tableDescription: {
-        fontSize: 12, // Match text-[12px]
-        color: '#000000',
-        bold: true,
-      },
-      totalAmount: {
-        fontSize: 26, // Match text-[26px]
-        color: '#000000',
-        bold: true,
-      },
-      orderNo: {
-        fontSize: 18, // Match text-[18px]
-        color: '#CB202D',
-        bold: true,
-      },
-      button: {
-        fontSize: 16, // Match text-[16px]
-        color: '#FFFFFF',
-        bold: true,
-      },
-    },
-    defaultStyle: {
-      font: 'Roboto',
-    },
-  };
+    };
 
-  return docDefinition;
-};
+    return docDefinition;
+  };
 
 module.exports = { generateInvoiceDocument };

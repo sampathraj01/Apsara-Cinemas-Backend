@@ -50,8 +50,8 @@ module.exports.addorder = async (event) => {
 
     // Step 4 -> Create Razorpay order
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || "rzp_test_RTETuyApMx9Y6C",
-      key_secret: process.env.RAZORPAY_KEY_SECRET || "Y1Db9TB5uTnxUGeA5QlBYoBK",
+      key_id: process.env.RAZORPAY_KEY_ID || "rzp_live_RUUulcgGzP6EKt",
+      key_secret: process.env.RAZORPAY_KEY_SECRET || "DreJjErMcTLiQ9Lx50lVoSbo",
     });
 
     const amountInPaise = Math.round(parseFloat(amount) * 100);
