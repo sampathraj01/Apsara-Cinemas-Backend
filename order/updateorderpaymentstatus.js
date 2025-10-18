@@ -128,11 +128,19 @@ module.exports.updateorderpaymentstatus = async (event) => {
       );
 
 
-       return {
-        statusCode: 200,
-        headers: generateHeaders(),
-        body: JSON.stringify({ success: true, message: "Payment success order created .", color: "success", invoicepdfurl : pdfUrl  }),
-      };
+     return {
+  statusCode: 200,
+  headers: {
+    'Access-Control-Allow-Origin': '*',           // ✅ CORS FIX
+    'Access-Control-Allow-Methods': 'POST, OPTIONS', // ✅ CORS FIX
+    'Access-Control-Allow-Headers': 'Content-Type', // ✅ CORS FIX
+    "Content-Type": "application/pdf",
+    "Content-Disposition": `attachment; filename="Invoice-${order.orderno}.pdf"`,
+  },
+  body: pdfBuffer.toString("base64"),
+  isBase64Encoded: true,
+};
+
 
     } else if (paymentstatus === "failed") {
         updateExpression += ", paymentfailedreason = :paymentfailedreason";

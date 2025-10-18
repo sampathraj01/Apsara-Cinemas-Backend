@@ -284,8 +284,8 @@ functions:
     handler: orderstatus/updateorderstatus.updateorderstatus
     events:
       - http:
-          path: order/updateorderstatus
-          method: post
+          path: order/updateorderstatus/{orderid}
+          method: patch
           cors: true
 
   getRecentOrders:

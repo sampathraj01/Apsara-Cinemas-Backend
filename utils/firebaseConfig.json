@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "apasar-theatre",
+  "private_key_id": "3d1959c496dd55803d4beabb8cf183c624861eff",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCzkBVw8R6nfadI\npKlneYTUPyvI9Grmg2LcFfB54g6nuJjkaBmS2grfkwRDrHo9OYNgWedVcMbW9b/D\nzrZsKE6LGHLhC2XyHSyKXPQ0y9e2qulCWjzEECbMOGrkq1vP9rd0+AoKvsDW6dns\nm+aoSAgAc0tnWCyEq6WhJWK7RPvmGk6Ss99r/xh7ktP4PR17v+fuBUZWcxscUeT6\nH5lcJwMERK5W409EPcXH6LopPib84hC/XpfSnPj+bNUQYqeANdgFddftzk8v92TP\nyR3Z37DtD7J+BKIwCrqjHoc1WE3lWBNo4+8dDOx9XC7VbK2J+s837RQ5OfDjgqxT\n9Ip7AzQRAgMBAAECggEABnaAUbqD/sWhheuoo0OhmcgU9IcuP9ITzABy0YLm7Hd9\nnUmik1a2FHpPVCY67MWLVSZMksExOZ8fwgBIhZe6d/wvH6rQMQjcHQt1HgoGNMTD\nCjMtmRBMbTD3UU1aS8psAPxFKZeDC66KvEmXjDqyJbNV+p1sVhwdeobaHmEVwKA7\nVkSuwsXtzMuXPJ/Nl3o6cKeiU+HxvDxEyXjdxKuyAP6Fqset2Dob5FOyK/1QSUn2\nE1LqtrRwn3LrciqAbA4+b7+sRP21a8Dg2RF5SHy03LcbP2LzVCsmHw55NYv6hcko\nvs1frPhCb+gIW/GlQXyoWaKeGVxDpwGZCZUOdfvqVwKBgQDXvnCrfSPGzHKa6Z0q\n2h74TrZNfFU2h5e96zHqGXbOvPj7vwPe39Thxqa7m3aC+XlHn2gM9Te59pER9A5W\nQRPbu5JhvxPYBdQsbR1FEvBxyXmTUcELUofEBta5iXUQgo186cbVbeiyH/uePgKl\nnyRdPzNjuqDCkX8tzqkmz3HT9wKBgQDVEVydB4IZ1w7a2XEO6KAqzQuKsa23V2Pj\nZqgqDmGzhn4SyfBpASEonqsfReZJvi14uo/2CpSxFnyvS4I3GmoDTr4JGAe/RIN9\n6/FSK483K7F5k+MQ9va/49OTtxT0zlv55P2ciCs4VsdCCaO/C1ntPvb24KHcn57P\nvAlq5qgmNwKBgQCdWEop+AGAupkW/CxhFWWi6R0yE+y98VQs8fycZGfuzYm1aRF0\nmcBTzaLKjs53JWVbZBnp4Wn8GaSh+GIAbEQEbJ+M5GOfmFiu8gF34CE2i588X1Kw\nZEeaIva1qFeVa/Gu2XznKdqdFpBXT5h0nEVUMITVRkZ6wMyFZwScxoyY7wKBgGcx\ngnZ3VXaoZwRtvcknt7MjHgztYyJiC/nuFVJRJtapM9Rrw6lHp8ShnGWIGDHtDt7j\nFKholX1zU64e1xFTFLdHYtjKr63eRAUvyfAvMqzY15r3mkj0I6vqbuWjDV5Ht9o/\nIum2NaCSvuzn+Eul9sbl8Py+7QYKtQMNok4JKrVfAoGBAMfiD7tr5YGsvHtRWYQ7\nQfD+0aRmLcs8+uLXOZaBBTmHfXn9EIX3eu1y10+gal2yJkUPQutxBM2DtLU/otyW\njAquYCKUjfdIYVdGKkqJntR698CSHzwODw88mOSViHVPDOM7kU/ZZsYwfJzinmrL\nii3AMeUHtWrNbmOj9qa4iK9v\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-fbsvc@apasar-theatre.iam.gserviceaccount.com",
+  "client_id": "105128119440319214084",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-fbsvc%40apasar-theatre.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}
